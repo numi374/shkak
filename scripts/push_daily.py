@@ -39,12 +39,16 @@ def push(date):
     if sum(x["date"] == date for x in index) != 1:
         raise ValueError("Local archive index mismatch")
     try:
-        remote_content(issue_path)
+        remote_issue = remote_content(issue_path)
     except RuntimeError as exc:
         if "404" not in str(exc):
             raise
     else:
-        raise FileExistsError(f"Remote {issue_path} already exists; refusing overwrite")
+        remote_index = json.loads(remote_content(index_path))
+        if json.loads(remote_issue) == issue and any(x["date"] == date for x in remote_index):
+            print(f"{date} already published; no changes made")
+            return False
+        raise FileExistsError(f"Remote {issue_path} differs; refusing overwrite")
     remote_index = json.loads(remote_content(index_path))
     if any(x["date"] == date for x in remote_index):
         raise FileExistsError("Remote index already has this date")
@@ -62,6 +66,7 @@ def push(date):
     })
     api(f"{REPOSITORY}/git/refs/heads/main", "PATCH", {"sha": created["sha"], "force": False})
     print(f"Committed {date}: {created['sha']}")
+    return True
 
 
 if __name__ == "__main__":
