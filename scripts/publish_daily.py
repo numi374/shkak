@@ -10,11 +10,11 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 from urllib.parse import urlparse
-from zoneinfo import ZoneInfo
 
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"
 START=dt.date(2026,10,10)
+CHINA_TIME=dt.timezone(dt.timedelta(hours=8))
 MODEL=os.getenv("OPENAI_MODEL","gpt-5-mini")
 ROADMAP=[
  "接收并输出用户消息","变量：保存助手名字","字符串：组织回复","清理用户输入的空格",
@@ -179,7 +179,9 @@ def publish(date):
 def main():
     p=argparse.ArgumentParser();p.add_argument("--date",help="ISO date; default today in Asia/Shanghai")
     a=p.parse_args();logging.basicConfig(level=logging.INFO,format="%(levelname)s %(message)s")
-    date=dt.date.fromisoformat(a.date) if a.date else dt.datetime.now(ZoneInfo("Asia/Shanghai")).date()
-    if date<START or date>dt.datetime.now(ZoneInfo("Asia/Shanghai")).date(): raise SystemExit("Date outside live range")
+    date=dt.date.fromisoformat(a.date) if a.date else dt.datetime.now(CHINA_TIME).date()
+    if date<START or date>dt.datetime.now(CHINA_TIME).date(): raise SystemExit("Date outside live range")
+    if not os.getenv("OPENAI_API_KEY"):
+        raise SystemExit("OPENAI_API_KEY is missing; future days cannot be generated")
     publish(date)
 if __name__=="__main__": main()
