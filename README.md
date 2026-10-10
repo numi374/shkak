@@ -1,35 +1,38 @@
-# 每日纪事｜每日任务 + AI 科技报
+# 日常｜个人每日网站
 
-仓库：numi374/shkak。手机优先的报纸式首页；按北京时间分日的本地任务记录。
+手机优先的静态网站。每天一个日期，包含任务、15 分钟 AI 编程、AI 科技报、杭州工作雷达。正式归档从 **2026-10-10** 开始；旧日报不迁移。
 
-## 已实现
-- `index.html`：报纸风格首页，自动读取 `archive/index.json` 展示最新一期与往期；每日任务、前后日期切换、完成统计和删除。
-- `archive/2026-09-29.html`：此前网页试刊版**原文**，未重新核查。该原始网页没有逐条完整来源 URL，不能伪称有。
-- `archive/index.json`：仅列出实际已保存 HTML 的期数。
-- `archive/missing.json`：已知但无法取回完整逐字正文的期数，**不是**日报正文。
-- `.github/workflows/daily-newspaper.yml`：北京时间每天约 09:20 尝试运行；GitHub Actions 定时执行可能延迟。
-- `scripts/publish_daily.py`：使用 OpenAI Responses API 的 web_search_preview 搜索、生成新一期，进行最小长度/来源链接数/栏目检查及第二次 AI 检查；未通过时失败且不提交。二次 AI 检查不是人工事实核验。
+## 网站和数据
 
-## 部署（尚待确认）
-仓库是公开的，但**保存 HTML 不代表 GitHub Pages 已启用**。
-到 GitHub 仓库 → Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: main, folder: /(root) → Save。
-启用并部署成功后，预期访问地址： https://numi374.github.io/shkak/ 。
-以 Pages 设置页实际显示的 URL 和 Actions 部署状态为准。
+- 首页：`index.html`、`styles.css`、`app.js`
+- 任务存储适配器：`task-store.js`
+- 日期目录：`data/YYYY-MM-DD/day.json`
+- 归档目录：`data/index.json`
+- 自动生成：`scripts/publish_daily.py`
+- 定时工作流：`.github/workflows/daily.yml`
 
-## 自动发布（需要用户配置；尚未成功实测）
-1. 仓库 → Settings → Secrets and variables → Actions → New repository secret。
-2. Name: `OPENAI_API_KEY`；Secret: 你自己的 OpenAI API 密钥。**不要**把密钥放到网页、README、Issue 或聊天记录中。
-3. 如需指定模型，Repository variables 中新增 `OPENAI_MODEL`；默认 `gpt-5-mini`。模型必须有 Responses API 和联网搜索工具权限。
-4. 仓库 → Actions → Daily AI newspaper → Run workflow，先手动测试。查看工作流日志，确认 API 调用、生成文件、commit 均成功，再等待定时运行。
-5. 生成和搜索会消耗 API 额度；GitHub Actions 的 schedule 可能延迟。失败时不会生成空白报纸，也不会假装已发布。
+任务只保存在**当前浏览器的 localStorage**。换手机、换浏览器或清除浏览器数据后可能消失。未来要做同步，可替换 `task-store.js`，无需改页面其他逻辑。
 
-**重要**：当前自动化仅覆盖《每日 AI 科技报》，**没有**自动迁移现有 ChatGPT 定时任务、每日 AI 编程或杭州求职雷达。网站内任务是浏览器本地记录，不跨设备同步。
+## 每天如何运行
 
-## 历史迁移审计
-- 已找到并保留完整 HTML：2026-09-29 网页试刊版（历史未核查）。
-- 确认曾生成但没有可提取逐字正文：第015期（2026-10-05）、第016期（10-06）、第017期（10-07）、第018期（10-08）、第019期（10-09）、第020期（10-10）。
-- 更早第001～014期：日期与完整正文目前未能逐期确认。
-- **绝不**将回忆、提纲、摘要或重新撰写的文章标成历史原文。
+GitHub Actions 每天北京时间约 09:20 运行（GitHub 的 schedule 可能延迟）。脚本先生成课程，再通过 OpenAI Responses API 的 web search 生成科技报和岗位。它检查搜索工具确实调用、数据结构、原始 HTTPS 链接、内容长度、岗位薪资门槛和重复职位。全部通过后才写当天 JSON 与归档目录；同一天再次运行直接退出，旧日期永不覆盖。若失败，已发布的页面和历史仍可用。
 
-## 内容可信度
-历史文章的产品、新闻、价格、许可证及命令未经重新核查。新文章通过联网检索和自动质量门槛，仍可能包含事实错误；来源链接不等于独立事实核实。发布结果应人工抽查。
+自动来源检查不是人工事实核查。招聘状态、价格、免费额度、版本和许可证会变化，阅读时仍应打开原始来源确认。没有可核实的新岗位时显示 0 个，不凑数。
+
+## 配置
+
+1. 仓库 → **Settings → Secrets and variables → Actions → New repository secret**。
+2. Name 填 `OPENAI_API_KEY`，Value 填你自己的 OpenAI API Key。不要把 Key 发到聊天、提交到仓库或放进网页。
+3. 可选：在同一页 **Variables → New repository variable**，Name `OPENAI_MODEL`，Value 是支持 Responses API 和 web search 的模型；默认 `gpt-5-mini`。
+4. Pages 使用 **main 分支 / (root)**。启用后，首次部署和每天 Actions 推送的新提交都会触发重新部署。
+5. Actions → **Publish daily page → Run workflow**，查看运行日志。正式判定成功还需确认新 JSON、自动 commit、Pages 部署和公网内容。
+
+本地检查：`python -m unittest discover -s tests -v`。不带 Key 执行生成脚本时会在写入前失败；已有日期会直接无操作退出。
+
+## 失败排查
+
+在仓库 **Actions → Publish daily page** 查看最新运行。常见原因是 Secret 缺失、API 余额或模型权限不足、联网搜索失败、模型返回格式/引用未通过检查、工作流没有仓库写权限。若生成成功但网页仍旧，检查 **Actions → pages build and deployment**、Settings → Pages，以及 `data/index.json` 中是否出现当天日期。定时任务可能延迟，可手动 Run workflow 重试。
+
+## 成本
+
+GitHub Pages 对公开仓库通常无需单独服务器费用。OpenAI 成本取决于模型、搜索次数和输出长度。以 `gpt-5-mini` 为例，官方标价为输入 $0.25/百万 token、输出 $2/百万 token，web search 为 $0.01/次并另计搜索内容 token。假设每天 3 次搜索、2 万输入 token、6000 输出 token，约 **$0.05/天，$1.50/月**；这是预算估算，实际账单以 OpenAI 平台为准。降低成本可减少搜索主题或输出长度，但可能损失日报深度。

@@ -1,36 +1,13 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f4f0e6"><title>每日纪事｜任务与 AI 科技报</title>
-<style>
-:root{--paper:#f7f4ec;--ink:#22241f;--red:#a13228;--line:#cfc8b9;--sub:#68665d}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.75 system-ui,"Microsoft YaHei",sans-serif}a{color:var(--red)}button,input{font:inherit}button{cursor:pointer}main{max-width:1000px;margin:auto;padding:0 18px 65px}
-header{text-align:center;border-bottom:4px double var(--ink);padding:32px 0 22px}.eyebrow{font-size:12px;letter-spacing:.25em;color:var(--red);font-weight:700}.mast{font:700 clamp(40px,8vw,75px)/1.2 Georgia,"Noto Serif SC",serif;letter-spacing:.04em;margin:8px 0}.dateline{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:6px;font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-nav{display:flex;gap:18px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--line);padding:13px 0}nav a{text-decoration:none;color:var(--ink);font-size:14px;font-weight:700}
-.grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,1fr);gap:32px}.section{padding:24px 0;border-bottom:1px solid var(--line)}.tag{color:var(--red);font-size:12px;letter-spacing:.15em;font-weight:800}h2{font:700 clamp(26px,4vw,36px)/1.35 Georgia,"Noto Serif SC",serif;margin:8px 0 12px}h3{margin:10px 0 5px}.muted{color:var(--sub);font-size:14px}.lead{font-size:18px}.hero-link{display:inline-block;background:var(--ink);color:white;padding:10px 18px;text-decoration:none;margin:12px 0}.issue{padding:16px 0;border-top:1px solid var(--line)}.issue a{font-weight:700;text-decoration:none}.badge{display:inline-block;font-size:12px;border:1px solid var(--line);padding:2px 8px;margin:5px 0}.note{background:#eee6d8;border-left:4px solid var(--red);padding:12px 14px;font-size:14px}
-.taskrow{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.taskrow input{width:19px;height:19px;accent-color:var(--red)}.taskrow span{flex:1}.done{text-decoration:line-through;color:var(--sub)}.delete{border:0;background:transparent;color:var(--sub);font-size:20px;padding:0 7px}
-form{display:flex;gap:8px;margin-top:14px}form input{min-width:0;flex:1;padding:10px;background:#fffdf8;border:1px solid var(--line)}form button{background:var(--red);color:#fff;border:0;padding:9px 14px}
-.daybar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0}.daybar button{background:transparent;border:1px solid var(--line);padding:6px 9px}.daybar strong{font-size:14px}.archive-list{max-height:580px;overflow:auto}
-footer{padding:30px 0;color:var(--sub);font-size:13px}
-@media(max-width:720px){.grid{grid-template-columns:1fr;gap:0}header{padding-top:22px}.mast{font-size:44px}.dateline{font-size:12px}.section{padding:20px 0}.lead{font-size:16px}}
-</style></head><body><main>
-<header><div class="eyebrow">THE DAILY LEDGER · 个人数字报纸</div><h1 class="mast">每日纪事</h1><div class="dateline"><span>每日任务 × AI 科技报</span><span id="today"></span><span>北京时间 · 持续归档</span></div></header>
-<nav aria-label="栏目"><a href="#latest">最新一期</a><a href="#tasks-section">每日任务</a><a href="#archive">往期报纸</a><a href="#about">说明</a></nav>
-<div class="grid"><div>
-<section class="section" id="latest"><div class="tag">FRONT PAGE / 今日头版</div><h2 id="latest-title">正在读取往期目录…</h2><p id="latest-desc" class="lead"></p><a id="latest-link" class="hero-link" href="archive/2026-09-29.html">阅读最新一期 →</a><p class="muted">历史文章按原文保存，未经重新核实的内容均会标注；不将历史报道视为当日新闻。</p></section>
-<section class="section" id="archive"><div class="tag">ARCHIVES / 按日期查阅</div><h2>往期报纸</h2><div id="issues" class="archive-list" aria-live="polite">读取中…</div></section>
-</div><aside>
-<section class="section" id="tasks-section"><div class="tag">DAILY PLANNER / 每日清单</div><h2>今天做什么</h2><div class="daybar"><button id="prev" aria-label="前一天">← 前一天</button><strong id="selected-day"></strong><button id="next" aria-label="后一天">后一天 →</button></div><div id="tasks"></div><form id="add"><input id="task" placeholder="添加一项任务" aria-label="新任务" maxlength="120" required><button>添加</button></form><p class="muted" id="count"></p><p class="note">任务只保存在当前浏览器；不同设备不会同步。清除浏览器数据可能丢失记录。</p></section>
-<section class="section" id="about"><div class="tag">EDITOR'S NOTE / 编辑说明</div><h2>关于这份报纸</h2><p>完整保留已找到的历史原文；未找到正文的期数不会用新写摘要替代。日报可包含 AI 新工具、GitHub 开源、产品实验室、学习练习与行业趋势，具体以当期原文为准。</p><p class="muted">当前页面的“最新一期”指已成功归档的最新一期，不代表今天已经自动发布。</p></section>
-</aside></div><footer>每日纪事 · 内容归档与任务记录分离 · <a href="README.md">项目说明</a></footer>
-</main><script>
-const tz='Asia/Shanghai',today=new Intl.DateTimeFormat('sv-SE',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());document.getElementById('today').textContent=today;
-let selected=today,tasks=[];
-const el=id=>document.getElementById(id);
-function shiftDay(date,delta){const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+delta);return d.toISOString().slice(0,10)}
-function load(){try{const v=JSON.parse(localStorage.getItem('daily-tasks:'+selected));tasks=Array.isArray(v)?v:[]}catch{tasks=[]}if(!tasks.length&&!localStorage.getItem('daily-tasks:'+selected)&&selected===today)tasks=[{text:'AI 编程练习 15 分钟',done:false},{text:'阅读 AI 科技报',done:false},{text:'查看杭州岗位雷达',done:false}]}
-function save(){try{localStorage.setItem('daily-tasks:'+selected,JSON.stringify(tasks))}catch(e){alert('保存失败，请检查浏览器存储设置')}}
-function render(){el('selected-day').textContent=selected;const box=el('tasks');box.replaceChildren();tasks.forEach((t,i)=>{const label=document.createElement('label');label.className='taskrow';const check=document.createElement('input');check.type='checkbox';check.checked=!!t.done;const span=document.createElement('span');span.textContent=t.text;if(t.done)span.className='done';check.addEventListener('change',()=>{tasks[i].done=check.checked;save();render()});const del=document.createElement('button');del.className='delete';del.type='button';del.textContent='×';del.setAttribute('aria-label','删除'+t.text);del.onclick=()=>{tasks.splice(i,1);save();render()};label.append(check,span,del);box.append(label)});el('count').textContent=tasks.filter(t=>t.done).length+' / '+tasks.length+' 项完成'}
-el('prev').onclick=()=>{selected=shiftDay(selected,-1);load();render()};el('next').onclick=()=>{selected=shiftDay(selected,1);load();render()};el('add').onsubmit=e=>{e.preventDefault();const text=el('task').value.trim();if(!text)return;tasks.push({text,done:false});save();render();el('task').value=''};load();render();
-async function issues(){try{const res=await fetch('archive/index.json?ts='+Date.now(),{cache:'no-store'});if(!res.ok)throw Error('HTTP '+res.status);const data=await res.json();if(!Array.isArray(data))throw Error('目录格式错误');data.sort((a,b)=>b.date.localeCompare(a.date));const box=el('issues');box.replaceChildren();if(!data.length){box.textContent='暂无已核实的归档文件';return}data.forEach(item=>{if(!/^archive\/[\w./-]+\.html$/.test(item.path))return;const article=document.createElement('article');article.className='issue';const a=document.createElement('a');a.href=item.path;a.textContent=item.date+' · '+(item.issue?'第'+item.issue+'期 · ':'')+item.title;const div=document.createElement('div');div.className='muted';div.textContent=item.status==='historical-unverified'?'历史原文 · 未重新核实':item.status||'归档';article.append(a,div);box.append(article)});const first=data[0];el('latest-title').textContent=first.title;el('latest-desc').textContent=first.date+(first.issue?' · 第'+first.issue+'期':'')+' · 已归档内容';el('latest-link').href=first.path}catch(e){el('issues').textContent='目录暂时无法加载：'+e.message;el('latest-title').textContent='历史目录暂不可用';el('latest-desc').textContent='可先阅读已保存的 2026-09-29 试刊版'}}
-issues();
-</script></body></html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f6f2e9"><title>日常｜我的每日数字报</title>
+<link rel="stylesheet" href="styles.css"><script src="task-store.js" defer></script><script src="app.js" defer></script>
+</head>
+<body><div class="shell">
+<header class="masthead"><p class="kicker">PERSONAL DAILY · 每天一页</p><h1>日常<span>.</span></h1><p class="subtitle">给今天留一份清楚的记录</p><div class="edition"><span id="edition-date">加载中</span><span id="edition-day"></span><span>杭州时间</span></div></header>
+<nav class="topnav" aria-label="网站导航"><button id="nav-today">今天</button><button id="nav-history">历史归档</button></nav>
+<main id="main" aria-live="polite"><p>正在打开今天这一页……</p></main>
+<footer>日常 · 每日内容按日期归档 · <a href="README.md">使用与数据说明</a></footer>
+</div></body></html>

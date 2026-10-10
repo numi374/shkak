@@ -1,16 +1,17 @@
-name: Daily AI newspaper
+name: Publish daily page
 on:
   workflow_dispatch:
   schedule:
-    - cron: '20 1 * * *' # 09:20 Beijing time (UTC+8)
+    - cron: '20 1 * * *' # 09:20 Asia/Shanghai; scheduled starts may be delayed
 permissions:
   contents: write
 concurrency:
-  group: daily-ai-newspaper
+  group: publish-daily-page
   cancel-in-progress: false
 jobs:
   publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -18,19 +19,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Generate and check newspaper
+      - name: Validate site and generator
+        run: python -m unittest discover -s tests -v
+      - name: Generate complete daily data
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-5-mini' }}
         run: python scripts/publish_daily.py
-      - name: Commit only if a new issue was generated
+      - name: Commit a new day
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add archive/
+          git add data/
           if git diff --cached --quiet; then
-            echo "No new issue."
+            echo "No new day; existing data was preserved."
           else
-            git commit -m "Publish daily AI newspaper"
-            git push
+            git commit -m "Publish daily page"
+            git push origin HEAD:main
           fi
