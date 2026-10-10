@@ -52,7 +52,7 @@ if not review.strip().upper().startswith("ACCEPT"):
     raise RuntimeError("Second-pass source check rejected draft; nothing published")
 # Preserve Markdown verbatim in readable, wrapped preformatted layout; escape all model output.
 safe=html.escape(article)
-safe=re.sub(r'https://[^\\s&lt;&gt;]+',lambda m: '<a href="'+m.group(0)+'" rel="noopener noreferrer" target="_blank">'+m.group(0)+'</a>',safe)
+safe=re.sub(r'https://[^\s&lt;&gt;]+',lambda m: '<a href="'+m.group(0)+'" rel="noopener noreferrer" target="_blank">'+m.group(0)+'</a>',safe)
 page=f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>每日 AI 科技报｜{date}</title><style>
 body{{margin:0;background:#eee9dd;color:#222;font:16px/1.8 system-ui,sans-serif}}main{{max-width:850px;margin:auto;background:#fffdf8;padding:clamp(16px,5vw,48px);min-height:100vh}}header{{border-bottom:4px double #222}}h1{{font:700 clamp(32px,7vw,58px) Georgia,serif}}a{{color:#a13228}}article{{white-space:pre-wrap;overflow-wrap:anywhere;font-family:inherit}}.note{{background:#f6ebdc;padding:12px;border-left:4px solid #a13228;font-size:14px}}</style></head><body><main><header><p><a href="../index.html">← 返回首页</a></p><h1>每日 AI 科技报</h1><p>{date} · 自动生成版</p></header><p class="note">本期由 AI 联网检索生成，并经过自动二次检查；这不等同于人工逐条核验。新闻、价格与命令请以文中官方来源为准。</p><article>{safe}</article></main></body></html>"""
 target.write_text(page,encoding="utf-8")
