@@ -1,30 +1,63 @@
 {
-  "note": "以下是已知存在过、但目前无法取回完整逐字正文的期数；不以摘要代替原文。日期及期数依据既有对话记录，其他期数待核对。",
-  "missing": [
+  "note": "历史对话检索审计。这里只记录能确认的存在状态；没有逐字正文时绝不根据摘要重建为“原文”。",
+  "recovered": [
     {
-      "date": "2026-10-05",
-      "issue": "015"
+      "date": "2026-09-29",
+      "label": "网页试刊版",
+      "status": "full-original-archived",
+      "path": "archive/2026-09-29.html"
     },
     {
-      "date": "2026-10-06",
-      "issue": "016"
-    },
-    {
-      "date": "2026-10-07",
-      "issue": "017"
-    },
-    {
-      "date": "2026-10-08",
-      "issue": "018"
-    },
-    {
-      "date": "2026-10-09",
-      "issue": "019"
-    },
-    {
-      "date": "2026-10-10",
-      "issue": "020"
+      "date": "2026-10-03",
+      "issue": "013",
+      "status": "historical-search-found-but-verbatim-body-not-exported",
+      "known_topics": [
+        "Shopify Canvas",
+        "DigitalOcean Agent Droplets",
+        "Claude-Mem",
+        "Permission Receipt"
+      ],
+      "source_links_recovered": [
+        "https://www.shopify.com/news/introducing-canvas",
+        "https://changelog.shopify.com/",
+        "https://www.digitalocean.com/pricing/agent-droplets",
+        "https://github.com/thedotmack/claude-mem"
+      ],
+      "note": "历史检索明确称当日完整正文曾被命中，但当前检索结果只返回内容概述和部分链接，未返回可安全归档的逐字正文，因此仍不写入HTML原文归档。"
     }
   ],
-  "other": "更早的第001至014期，完整原文及逐期日期未能确认；不能断言均已实际生成。"
+  "confirmed_generated_body_unavailable": [
+    {
+      "issue": "015",
+      "date": "2026-10-05"
+    },
+    {
+      "issue": "016",
+      "date": "2026-10-06"
+    },
+    {
+      "issue": "017",
+      "date": "2026-10-07"
+    },
+    {
+      "issue": "018",
+      "date": "2026-10-08"
+    },
+    {
+      "issue": "019",
+      "date": "2026-10-09"
+    },
+    {
+      "issue": "020",
+      "date": "2026-10-10"
+    }
+  ],
+  "historical_leads_not_recovered": [
+    "创刊体验版",
+    "第002期",
+    "第003期",
+    "第004期",
+    "第012期"
+  ],
+  "warning": "第001-014期不能仅凭编号推断每天都实际生成过。第013期虽然检索到强证据，但当前没有逐字正文，故不冒充原文。"
 }
