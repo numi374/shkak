@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-11",
+  "coding": {
+    "day": "Day 2",
+    "title": "给助手起名字：用变量保存会变化的信息",
+    "what": "继续修改昨天的 assistant.py：把助手名字放进 assistant_name 变量，再把它和用户输入一起用于回复。今天只增加变量与字符串拼接，不引入新工具。",
+    "why": "真实 AI 应用需要记住配置和会话信息。助手名称、用户输入、模型回答都不是写死在每一行里的文字；变量让程序能重复使用这些信息。",
+    "explanation": [
+      "变量是一个有名字的数据位置。assistant_name = '小灯' 把文本“小灯”交给变量 assistant_name；之后写 assistant_name 就是在读取这个值。等号在这里是赋值，不是数学里的相等判断。",
+      "昨天的 user_message 也是变量，保存 input() 得到的用户输入。一个变量存固定的助手名字，另一个存每次输入的消息。",
+      "字符串是文本。用 + 可以把两段字符串接起来，例如 '我是' + assistant_name。拼接时要自己写空格或标点，不然文字会粘在一起。"
+    ],
+    "code": "assistant_name = '小灯'\nprint('你好，我是' + assistant_name)\nuser_message = input('你想问助手什么？')\nprint(assistant_name + '收到：' + user_message)",
+    "line_by_line": [
+      "第 1 行：把助手名字保存到 assistant_name；以后改名字只需改这一处。",
+      "第 2 行：拼接问候语和名字，向用户说明正在与谁对话。",
+      "第 3 行：沿用昨天的 input()，把刚输入的一句话保存到 user_message。",
+      "第 4 行：把助手名字、固定文字和用户输入拼接成一条回应。"
+    ],
+    "task": "用约 15 分钟打开昨天的 assistant.py，把示例运行一遍。把 assistant_name 改成你喜欢的名字，再运行一次，观察两处输出是否都跟着变化。最后增加一个 user_name 变量，保存你的名字，让程序在最开始输出“你好，某某”。试着解释：为什么改一个变量就能改变多处输出？",
+    "answer": "assistant_name = '小灯'\nuser_name = '小明'\nprint('你好，' + user_name + '。我是' + assistant_name)\nuser_message = input('你想问助手什么？')\nprint(assistant_name + '收到：' + user_message)",
+    "ai_use": "将来接入 LLM API 时，assistant_name 可以成为助手配置，user_message 会送给模型，模型回答又会存进新变量。把信息起清楚的名字，程序才容易逐步扩展。",
+    "project_increment": "连续项目“我的简单 AI 助手”保留昨天的终端输入，并增加可统一修改的助手名字与个性化问候。今天仍在同一个 assistant.py 上继续。",
+    "next": "Day 3 会练习更清楚地组织回复文字；不会突然加入 API 或框架。"
+  },
+  "newspaper": {
+    "title": "从模型调用到可交互回答：AI 应用的两层新工具",
+    "summary": "Genkit Dart 1.0 处理模型与流程，Open Intelligent UI 探索让回答变成可操作界面；两者都有官方原始资料。",
+    "intro": "本期核查到 2026-10-11。两项公告分别发表于 10 月 8 日和 10 月 9 日，并非声称今天刚发布。这里区分官方宣称、仓库可核对事实和我对初学者学习路径的建议；未核实的价格与免费额度明确写未确认。",
+    "stories": [
+      {
+        "category": "AI 新工具 / 行业趋势",
+        "title": "Google Genkit Dart 1.0：把 AI 调用组织成可测试的流程",
+        "published": "2026-10-08（Flutter 官方博客）",
+        "what": "Google 的 Flutter 博客宣布 Genkit Dart 1.0 稳定版。它是面向 Dart/Flutter 的开源 AI 应用框架：用统一接口接不同模型提供商，把输入、输出和执行过程组织为 flow，并提供本地开发界面查看调用过程。官方示例使用 dart pub add genkit 安装，在 Dart 服务端把 flow 暴露为 HTTP 接口；博客也展示人类确认工具调用的中断机制。",
+        "why": "它强调的不是一个更聪明的模型，而是应用怎样可靠地使用模型。一个 AI 助手如果要搜索资料、调用工具或给出结构化结果，需要知道输入是什么、何时出错、哪一步要用户确认。Genkit 把这些工程问题放在开发者面前。对于你正在学习的连续项目，这对应以后会学到的函数、API、结构化输出和工具调用，但今天不需要一次学完。",
+        "how": "适合已经用 Flutter/Dart 开发产品、想把 AI 能力接入手机应用的团队。官方安装命令是 dart pub add genkit；模型服务通常还需要对应提供商凭据。Genkit 框架开源，模型调用价格、免费额度以及不同服务商的计费需分别查证，本期未确认。若只想学习 Python 写第一个助手，继续用当前的 assistant.py 更合适；等你理解 HTTP 与 API 后，再比较这种流程框架。",
+        "limits": "博客把 1.0 称为可用于生产的稳定版，但这属于发布方定位，并不等于你的具体应用已经通过安全或性能测试。文章同时把更高层的有状态 Agent 与生成式 UI 放在 experimental 包中，不能把它们当成 1.0 核心已稳定。与直接调用单个模型 API 相比，框架提供统一接口和调试工具，也增加了学习和部署复杂度。",
+        "for_me": "先记住一个设计原则：模型调用只是助手的一步，输入、输出、错误和人工确认都要能看见。今天可在纸上画出“用户输入 → 处理 → 回复”三步，并标出将来哪一步可能需要模型。不要因为看到新框架就放弃正在积累的 Python 基础。",
+        "sources": [
+          "https://flutter.dev/blog/announcing-genkit-dart-1-0"
+        ]
+      },
+      {
+        "category": "GitHub 开源项目 / AI 产品创意",
+        "title": "Open Intelligent UI：让聊天回答成为可操作的小界面",
+        "published": "2026-10-09（CopilotKit 官方博客）",
+        "what": "CopilotKit 发布 Open Intelligent UI，并开放 CopilotKit/OpenIntelligentUI 仓库。项目尝试让聊天助手根据问题返回文字、图表、计算器或地图等交互内容。官方博客说它使用 CopilotKit 的生成式界面和 AG-UI 连接 Agent；GitHub 仓库可见 MIT 许可证、安装说明与源码。它是界面与 Agent 应用示例，不是一个新的基础大模型。",
+        "why": "普通聊天回答往往让用户再复制内容到表格、地图或计算器。这个项目的产品思路是把结果直接变成能调整参数的工具，对学习、比较方案和探索数据很直观。对于你未来想做的 AI 应用，值得观察的是“用户真正要完成什么任务”，而非仅把聊天框做得更花哨。",
+        "how": "适合熟悉前端、Python 服务与 Agent 接口，想研究生成式 UI 的开发者。README 列出 Node.js 22+、pnpm 9+、Python 3.12+ 和 uv 等前置条件，示例流程为克隆仓库后运行 make setup 与 make dev。默认演示需要 OpenAI 与 TypeSafe 的 API Key；仓库代码采用 MIT 许可证，但两家服务的价格和免费额度本期未确认。你现在可以只看演示与 README，无须为了今天的课程安装整套系统。",
+        "limits": "生成的界面可能包含错误数据或不合适的交互，仍需人工核对。官方示例说生成代码在受限 iframe 中运行，但这不能替代对实际部署的安全审查。与固定设计的网页组件相比，临时生成界面更灵活，也更难保证一致性、无障碍和事实准确。项目最近的发布声明是 10 月 9 日；本期没有独立运行评测，不把宣传视频当作质量证明。",
+        "for_me": "可借鉴一个小产品创意：以后给日语客服助手加“回复草稿卡片”，让用户查看引用资料、修改措辞、确认后再复制，而不是自动发送。今天的小实验不需要代码：拿同一个问题，分别要求 AI 输出一段文字和一个带可编辑字段的回复模板，比较哪种更容易核查。",
+        "sources": [
+          "https://www.copilotkit.ai/blog/introducing-open-intelligent-ui",
+          "https://github.com/CopilotKit/OpenIntelligentUI"
+        ]
+      }
+    ],
+    "experiment": "花 10 分钟做“回答形式”实验：问同一个 AI 工具“帮我整理一条日语客户咨询的回复”，先要一整段文字，再要包含事实依据、待确认信息、日文草稿三个字段的模板。观察哪个版本更容易发现缺失事实。只用虚构问题，勿上传真实客户信息。"
+  },
+  "jobs": {
+    "summary": "今天检索了杭州 AI 产品运营、日语客户成功、游戏运营等方向；能看到一些薪资范围，但搜索结果多为列表页或较早缓存，无法同时核实具体职位链接、发布时间和仍在招聘状态，因此今天不推荐未经核实的岗位。",
+    "positions": []
+  }
+}
